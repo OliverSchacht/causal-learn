@@ -139,7 +139,7 @@ def ges(X: ndarray, score_func: str = 'local_score_BIC', maxP: Optional[float] =
                                         np.where(G.graph[j, :] == Endpoint.TAIL.value)[0])  # neighbors of Xj
 
                     Ti = np.union1d(np.where(G.graph[:, i] != Endpoint.NULL.value)[0],
-                                    np.where(G.graph[i, 0] != Endpoint.NULL.value)[0])  # adjacent to Xi
+                                    np.where(G.graph[i, :] != Endpoint.NULL.value)[0])  # adjacent to Xi
 
                     NTi = np.setdiff1d(np.arange(N), Ti)
                     T0 = np.intersect1d(Tj, NTi)  # find the neighbours of Xj that are not adjacent to Xi
@@ -182,7 +182,6 @@ def ges(X: ndarray, score_func: str = 'local_score_BIC', maxP: Optional[float] =
                 break
             G = insert(G, min_desc[0], min_desc[1], min_desc[2])
             update1.append([min_desc[0], min_desc[1], min_desc[2]])
-            print(G.graph)
             G = pdag2dag(G)
             G = dag2cpdag(G)
             G_step1.append(G)
@@ -192,7 +191,6 @@ def ges(X: ndarray, score_func: str = 'local_score_BIC', maxP: Optional[float] =
 
     ## --------------------------------------------------------------------
     # backward greedy search
-    print('backward')
     count2 = 0
     score_new = score
     update2 = []
@@ -246,7 +244,6 @@ def ges(X: ndarray, score_func: str = 'local_score_BIC', maxP: Optional[float] =
                 break
             G = delete(G, min_desc[0], min_desc[1], min_desc[2])
             update2.append([min_desc[0], min_desc[1], min_desc[2]])
-            print(G.graph)
             G = pdag2dag(G)
             G = dag2cpdag(G)
             G_step2.append(G)
